@@ -1,0 +1,1 @@
+export const useLogtoUserInfo = () => useState<any>('userInfo')
