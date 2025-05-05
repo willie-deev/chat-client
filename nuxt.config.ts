@@ -4,20 +4,20 @@ import {UserScope} from "@logto/js";
 export default defineNuxtConfig({
   modules: ['@logto/nuxt'],
   compatibilityDate: '2025-05-02',
-  devtools: { enabled: true },
-  devServer: {
-    port: 8080
-  },
+  devtools: { enabled: false },
+  // devServer: {
+  //   port: 8080
+  // },
   runtimeConfig: {
-    resourceServer: process.env.RESOURCE_SERVER,
     public: {
-      apiServer: process.env.API_SERVER
+      apiServer: process.env.NUXT_PUBLIC_API_SERVER
     },
     logto: {
-      endpoint: 'https://70j3dm.logto.app/',
-      appId: 'aychojwz0epxl9ur550b8',
-      appSecret: '8FGEvFPqedku79DzzhF4FkQkaKqKgy1n',
-      cookieEncryptionKey: '5R6dbpNPKHAebwAiQzFb0uxFkOVVtWew', // Random-generated
+      endpoint: process.env.NUXT_LOGTO_ENDPOINT,
+      appId: process.env.NUXT_LOGTO_APP_ID,
+      appSecret: process.env.NUXT_LOGTO_APP_SECRET,
+      cookieEncryptionKey: process.env.NUXT_LOGTO_COOKIE_ENCRYPTION_KEY,
+      resources: JSON.parse(process.env.NUXT_LOGTO_RESOURCES!),
     },
   },
   logto: {
@@ -29,9 +29,22 @@ export default defineNuxtConfig({
     },
     scopes: [UserScope.Email],
     fetchUserInfo: true,
-    resources: ['http://localhost:3000'],
+    // resources: ['http://localhost:3000'],
   },
   css: [
       '@picocss/pico/css/pico.min.css'
+  ],
+  vite: {
+    define: {
+      global: 'window'
+    },
+    resolve: {
+      alias: {
+        'sockjs-client$': 'sockjs-client/dist/sockjs.js'
+      },
+    },
+  },
+  plugins: [
+    { src: '~/plugins/stomp.client.ts', mode: 'client'}
   ]
 })
