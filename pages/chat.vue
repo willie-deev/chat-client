@@ -57,7 +57,7 @@
 
       const { $useStomp } = useNuxtApp()
       const { connected, subscribe, publish, disconnect } = $useStomp({
-        endpoint: 'http://localhost:3000/ws',
+        endpoint: config.public.apiServer + '/ws',
         headers: {
           Authorization: 'Bearer ' + accessToken.value
         },
